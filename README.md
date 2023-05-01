@@ -1,6 +1,6 @@
 <h1>INFO 4335 CASE STUDY</h1>
 
-<title>No 4. e-Wallet Management System </title>
+<h2>No 4. e-Wallet Management System </h2>
 
 Team Member:
 1. MUHAMMAD FIRDAUS BIN SHAHRUM 2013803

@@ -9,6 +9,9 @@ Team Member:
 4. MUHAMMAD ISKANDAR ZULQARNAIN BIN MOHD ABDULLAH 2029879
 
 Contribution:
-
+1. Functions
+2. Methods
+3. Classes
+4. HTML and CSS
 
 

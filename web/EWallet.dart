@@ -20,22 +20,20 @@ class EWallet {
   void makePayment(double amount) {
     var now = DateTime.now();
     var peakHour = now.hour > 11 && now.hour < 14;
-    if (peakHour) {
-      // window.alert("Congrats! You got 10% off due to peak hour bonus!!");
+    if (peakHour == true && amount < balance) {
       print("Congrats! You got 10% off due to peak hour bonus!!");
       window.alert("Congrats! You got 10% off due to peak hour bonus!!");
       amount *= 0.9;
-    }
-    if (amount > balance) {
-      // window.alert("Insufficient funds");
+    } else if (amount > balance) {
+      window.alert("Insufficient funds");
       print("Insufficient funds");
     } else {
       var temp = balance;
       balance -= amount;
       transactions.add(Transaction(temp, amount, now, balance));
       if (amount != 0) {
-        // window.alert("Payment successful. Current balance: \$${balance}");
-        print("Payment successful. Current balance: $getBalance()");
+        window.alert("Payment successful. Current balance: ${balance}");
+        // print("Payment successful. Current balance: $getBalance()");
       }
     }
   }

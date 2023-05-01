@@ -3101,15 +3101,16 @@
       this.transactions = t0;
       this.balance = 0;
     },
-    Transaction: function Transaction(t0, t1, t2, t3) {
+    Transaction: function Transaction(t0, t1, t2, t3, t4) {
       var _ = this;
-      _.balance = t0;
-      _.payment = t1;
-      _.date = t2;
-      _.remainingAmount = t3;
+      _.type = t0;
+      _.balance = t1;
+      _.payment = t2;
+      _.date = t3;
+      _.remainingAmount = t4;
     },
     main() {
-      var t1, myEWallet, balanceElement, t2, topUpAmountElement, topUpButton, t3, t4, t5, makePaymentElement, makePaymentButton, viewTransactionButtont;
+      var t1, myEWallet, balanceElement, t2, topUpAmountElement, topUpButton, t3, t4, t5, makePaymentElement, makePaymentButton, viewTransactionButton;
       if (A.Primitives_getHours(new A.DateTime(Date.now(), false)) > 11 && A.Primitives_getHours(new A.DateTime(Date.now(), false)) < 14) {
         t1 = document.querySelector("#notice");
         if (t1 != null)
@@ -3139,9 +3140,9 @@
         type$.nullable_void_Function._as(null);
         A._EventStreamSubscription$(t2._target, t2._eventType, t4, false, t3._precomputed1);
       }
-      viewTransactionButtont = t1.querySelector("#viewTransactionButton");
-      if (viewTransactionButtont != null) {
-        t1 = J.get$onClick$x(viewTransactionButtont);
+      viewTransactionButton = t1.querySelector("#viewTransactionButton");
+      if (viewTransactionButton != null) {
+        t1 = J.get$onClick$x(viewTransactionButton);
         t2 = t1.$ti;
         t3 = t2._eval$1("~(1)?")._as(new A.main_closure1(myEWallet));
         type$.nullable_void_Function._as(null);
@@ -4315,7 +4316,7 @@
       return receiver.length;
     }
   };
-  A.InputElement.prototype = {$isInputElement: 1};
+  A.InputElement.prototype = {$isInputElement: 1, $isCheckboxInputElement: 1};
   A.MouseEvent.prototype = {$isMouseEvent: 1};
   A.Node.prototype = {
     toString$0(receiver) {
@@ -4361,43 +4362,75 @@
   };
   A.EWallet.prototype = {
     topUp$1(amount) {
-      var t1,
-        _s14_ = "Invalid amount";
-      if (amount < 0) {
-        t1 = document.querySelector("#result");
+      var t2, t3, _this = this,
+        _s14_ = "Invalid amount",
+        now = new A.DateTime(Date.now(), false),
+        temp = _this.balance,
+        t1 = document,
+        isCreditCard = type$.CheckboxInputElement._as(t1.querySelector("#isCreditCard")).checked;
+      if (amount <= 0) {
+        t1 = t1.querySelector("#result");
         if (t1 != null)
           J.set$text$x(t1, _s14_);
+        B.Window_methods.alert$1(window, _s14_);
         return;
       }
-      if (amount === 0) {
-        t1 = document.querySelector("#result");
-        if (t1 != null)
-          J.set$text$x(t1, _s14_);
-        return;
-      }
-      this.balance = this.balance + (amount + 0.5);
-    },
-    getBalance$0() {
-      return this.balance;
+      t1 = _this.balance += amount;
+      t2 = isCreditCard === true;
+      if (t2) {
+        t1 += 0.5;
+        _this.balance = t1;
+        B.Window_methods.alert$1(window, "Top-up using credit card successful. Current balance: " + A.S(t1));
+      } else
+        B.Window_methods.alert$1(window, "Top-up using cash successful. Current balance: " + A.S(t1));
+      t1 = _this.transactions;
+      t3 = _this.balance;
+      if (t2)
+        B.JSArray_methods.add$1(t1, new A.Transaction("Top-up (Credit Card)", temp, amount, now, t3));
+      else
+        B.JSArray_methods.add$1(t1, new A.Transaction("Top-up (Cash)", temp, amount, now, t3));
     },
     displayTransactions$0() {
-      var table, tableRow, t2, balance, payment, date, remainingAmount, t3, t4, x, _i, transaction, t5, t6, t7, t8,
+      var table, existingTable, t2, tableRow, type, balance, payment, date, remainingAmount, headerRow, t3, t4, x, _i, transaction, t5, t6, t7, t8,
         t1 = document;
       t1.querySelector("#viewTransaction");
       table = t1.createElement("table");
+      table.id = "transactions-table";
+      existingTable = t1.querySelector("#transactions-table");
+      if (existingTable != null) {
+        t2 = existingTable.parentNode;
+        if (t2 != null)
+          t2.removeChild(existingTable);
+      }
       tableRow = A._setArrayType([], type$.JSArray_TableRowElement);
       t2 = type$.JSArray_TableCellElement;
+      type = A._setArrayType([], t2);
       balance = A._setArrayType([], t2);
       payment = A._setArrayType([], t2);
       date = A._setArrayType([], t2);
       remainingAmount = A._setArrayType([], t2);
-      for (t2 = this.transactions, t3 = t2.length, t4 = type$.TableCellElement, x = 0, _i = 0; _i < t2.length; t2.length === t3 || (0, A.throwConcurrentModificationError)(t2), ++_i) {
-        transaction = t2[_i];
+      headerRow = t1.createElement("tr");
+      t2 = type$.TableCellElement;
+      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Type");
+      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Balance");
+      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Amount");
+      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Date");
+      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Remaining Amount");
+      table.appendChild(headerRow);
+      for (t3 = this.transactions, t4 = t3.length, x = 0, _i = 0; _i < t3.length; t3.length === t4 || (0, A.throwConcurrentModificationError)(t3), ++_i) {
+        transaction = t3[_i];
         B.JSArray_methods.add$1(tableRow, t1.createElement("tr"));
+        B.JSArray_methods.add$1(type, t1.createElement("td"));
+        if (!(x < tableRow.length))
+          return A.ioore(tableRow, x);
+        B.JSArray_methods.$indexSet(type, x, t2._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
+        if (!(x < type.length))
+          return A.ioore(type, x);
+        B.TableCellElement_methods.set$text(type[x], transaction.type);
         B.JSArray_methods.add$1(balance, t1.createElement("td"));
         if (!(x < tableRow.length))
           return A.ioore(tableRow, x);
-        B.JSArray_methods.$indexSet(balance, x, t4._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
+        B.JSArray_methods.$indexSet(balance, x, t2._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
         if (!(x < balance.length))
           return A.ioore(balance, x);
         t5 = transaction.balance;
@@ -4405,7 +4438,7 @@
         B.JSArray_methods.add$1(payment, t1.createElement("td"));
         if (!(x < tableRow.length))
           return A.ioore(tableRow, x);
-        B.JSArray_methods.$indexSet(payment, x, t4._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
+        B.JSArray_methods.$indexSet(payment, x, t2._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
         if (!(x < payment.length))
           return A.ioore(payment, x);
         t6 = transaction.payment;
@@ -4413,7 +4446,7 @@
         B.JSArray_methods.add$1(date, t1.createElement("td"));
         if (!(x < tableRow.length))
           return A.ioore(tableRow, x);
-        B.JSArray_methods.$indexSet(date, x, t4._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
+        B.JSArray_methods.$indexSet(date, x, t2._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
         if (!(x < date.length))
           return A.ioore(date, x);
         t7 = transaction.date;
@@ -4421,7 +4454,7 @@
         B.JSArray_methods.add$1(remainingAmount, t1.createElement("td"));
         if (!(x < tableRow.length))
           return A.ioore(tableRow, x);
-        B.JSArray_methods.$indexSet(remainingAmount, x, t4._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
+        B.JSArray_methods.$indexSet(remainingAmount, x, t2._as(B.TableRowElement_methods._insertCell$1(tableRow[x], -1)));
         if (!(x < remainingAmount.length))
           return A.ioore(remainingAmount, x);
         t8 = transaction.remainingAmount;
@@ -4432,7 +4465,7 @@
         A.printString("Balance: " + A.S(t5) + ", Payment: " + A.S(t6) + ", Date: " + t7.toString$0(0) + ", Remaining Amount: " + A.S(t8));
         ++x;
       }
-      t1 = t1.body;
+      t1 = t1.querySelector("#Transaction-List");
       if (t1 != null)
         t1.appendChild(table);
     }
@@ -4456,7 +4489,7 @@
   };
   A.main_closure0.prototype = {
     call$1($event) {
-      var amountStr, amount, t1, now, t2, t3,
+      var amountStr, amount, t1, now, peakHour, t2, t3,
         _s50_ = string$.Congra;
       type$.MouseEvent._as($event);
       amountStr = this.makePaymentElement.value;
@@ -4467,21 +4500,25 @@
         return;
       t1 = this.myEWallet;
       now = new A.DateTime(Date.now(), false);
-      if (A.Primitives_getHours(now) > 11 && A.Primitives_getHours(now) < 14) {
-        A.print(_s50_);
-        B.Window_methods.alert$1(window, _s50_);
-        amount *= 0.9;
-      }
-      t2 = t1.balance;
-      if (amount > t2)
-        A.print("Insufficient funds");
-      else {
-        t3 = t2 - amount;
-        t1.balance = t3;
-        B.JSArray_methods.add$1(t1.transactions, new A.Transaction(t2, amount, now, t3));
-        if (amount !== 0)
-          A.print("Payment successful. Current balance: " + A.S(t1.get$getBalance()) + "()");
-      }
+      peakHour = A.Primitives_getHours(now) > 11 && A.Primitives_getHours(now) < 14;
+      if (amount > 0)
+        if (peakHour && amount < t1.balance) {
+          A.print(_s50_);
+          B.Window_methods.alert$1(window, _s50_);
+        } else {
+          t2 = t1.balance;
+          if (amount > t2)
+            B.Window_methods.alert$1(window, "Insufficient funds");
+          else {
+            t3 = t2 - amount;
+            t1.balance = t3;
+            B.JSArray_methods.add$1(t1.transactions, new A.Transaction("Payment", t2, amount, now, t3));
+            if (amount !== 0)
+              B.Window_methods.alert$1(window, "Payment successful. Current balance: " + A.S(t1.balance));
+          }
+        }
+      else
+        B.Window_methods.alert$1(window, "Invalid amount");
       A.displayBalance(t1);
     },
     $signature: 1
@@ -4501,13 +4538,11 @@
   })();
   (function installTearOffs() {
     var _static_1 = hunkHelpers._static_1,
-      _static_0 = hunkHelpers._static_0,
-      _instance_0_u = hunkHelpers._instance_0u;
+      _static_0 = hunkHelpers._static_0;
     _static_1(A, "async__AsyncRun__scheduleImmediateJsOverride$closure", "_AsyncRun__scheduleImmediateJsOverride", 2);
     _static_1(A, "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", "_AsyncRun__scheduleImmediateWithSetImmediate", 2);
     _static_1(A, "async__AsyncRun__scheduleImmediateWithTimer$closure", "_AsyncRun__scheduleImmediateWithTimer", 2);
     _static_0(A, "async___startMicrotaskLoop$closure", "_startMicrotaskLoop", 0);
-    _instance_0_u(A.EWallet.prototype, "get$getBalance", "getBalance$0", 11);
   })();
   (function inheritance() {
     var _inherit = hunkHelpers.inherit,
@@ -4542,12 +4577,12 @@
     typeUniverse: {eC: new Map(), tR: {}, eT: {}, tPV: {}, sEA: []},
     mangledGlobalNames: {int: "int", double: "double", num: "num", String: "String", bool: "bool", Null: "Null", List: "List"},
     mangledNames: {},
-    types: ["~()", "~(MouseEvent)", "~(~())", "Null()", "@(@)", "@(@,String)", "@(String)", "Null(@)", "Null(~())", "_Future<@>(@)", "~(Event)", "double()"],
+    types: ["~()", "~(MouseEvent)", "~(~())", "Null()", "@(@)", "@(@,String)", "@(String)", "Null(@)", "Null(~())", "_Future<@>(@)", "~(Event)"],
     interceptorsByTag: null,
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","JavaScriptFunction":"LegacyJavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","HtmlDocument":"Node","Document":"Node","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","MathMLElement":"Element","JSBool":{"bool":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"AsyncError":{"Error":[]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"double":{"num":[]},"int":{"num":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"TypeError":[],"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MouseEvent":{"Event":[]},"TableCellElement":{"Element":[],"EventTarget":[]},"TableRowElement":{"Element":[],"EventTarget":[]},"HtmlElement":{"Element":[],"EventTarget":[]},"AnchorElement":{"Element":[],"EventTarget":[]},"AreaElement":{"Element":[],"EventTarget":[]},"CharacterData":{"EventTarget":[]},"Element":{"EventTarget":[]},"FormElement":{"Element":[],"EventTarget":[]},"InputElement":{"Element":[],"EventTarget":[]},"Node":{"EventTarget":[]},"SelectElement":{"Element":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Window":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"SvgElement":{"Element":[],"EventTarget":[]}}'));
+  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","JavaScriptFunction":"LegacyJavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","HtmlDocument":"Node","Document":"Node","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","MathMLElement":"Element","JSBool":{"bool":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"AsyncError":{"Error":[]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"int":{"num":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"TypeError":[],"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MouseEvent":{"Event":[]},"TableCellElement":{"Element":[],"EventTarget":[]},"TableRowElement":{"Element":[],"EventTarget":[]},"HtmlElement":{"Element":[],"EventTarget":[]},"AnchorElement":{"Element":[],"EventTarget":[]},"AreaElement":{"Element":[],"EventTarget":[]},"CharacterData":{"EventTarget":[]},"Element":{"EventTarget":[]},"FormElement":{"Element":[],"EventTarget":[]},"InputElement":{"CheckboxInputElement":[],"Element":[],"EventTarget":[]},"Node":{"EventTarget":[]},"SelectElement":{"Element":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Window":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"SvgElement":{"Element":[],"EventTarget":[]}}'));
   A._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"StreamSubscription":1}'));
   var string$ = {
     Congra: "Congrats! You got 10% off due to peak hour bonus!!",
@@ -4557,6 +4592,7 @@
     var findType = A.findType;
     return {
       AsyncError: findType("AsyncError"),
+      CheckboxInputElement: findType("CheckboxInputElement"),
       Error: findType("Error"),
       Event: findType("Event"),
       Function: findType("Function"),

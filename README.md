@@ -1,1 +1,1 @@
-# html-E-Wallet
+An absolute bare-bones web app.

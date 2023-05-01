@@ -4,20 +4,17 @@ import 'EWallet.dart';
 
 void main() {
 
-  if(DateTime.now().hour > 11 && DateTime.now().hour < 14){
+  if(DateTime.now().hour > 11 && DateTime.now().hour < 14){//check if it is peak hour or not
     querySelector('#notice')?.text = "Congrats! You got 10% off due to peak hour bonus!!";
   }
   
   //querySelector('#output')?.text = 'Your Dart app is crawling.';
 
-   var myEWallet = EWallet();
+  var myEWallet = EWallet();
 
-  // Update the balance display
-  var balanceElement = querySelector('#output');
-  balanceElement?.text = "Account Balance: RM${myEWallet.balance.toString()}"; //change to string
+  var balanceElement = querySelector('#output');//displays balance on the html
+  balanceElement?.text = "Account Balance: RM${myEWallet.balance.toString()}";
 
-
-  // Add event listeners to the buttons
   var topUpAmountElement = querySelector('#topUpAmount') as InputElement;
   var topUpButton = querySelector('#topUpButton');
   topUpButton?.onClick.listen((event) {
@@ -29,10 +26,7 @@ void main() {
     if (amount == null) return;
 
     //querySelector('#output')?.text = 'Account balance: ${myEWallet.balance}';
-    myEWallet.topUp(amount); //pass value
-    //querySelector('#output')?.text = 'amount: $amount';
-    // Update the balance display
-    //balanceElement?.text = myEWallet.balance.toString();
+    myEWallet.topUp(amount);
     displayBalance(myEWallet);
   });
 
@@ -51,8 +45,8 @@ void main() {
     displayBalance(myEWallet);
   });
 
-  var viewTransactionButtont = querySelector('#viewTransactionButton');
-  viewTransactionButtont?.onClick.listen((event) {
+  var viewTransactionButton = querySelector('#viewTransactionButton');
+  viewTransactionButton?.onClick.listen((event) {
     myEWallet.displayTransactions();
   });
 
@@ -60,5 +54,5 @@ void main() {
 
 void displayBalance(EWallet myEWallet){
   var balanceElement = querySelector('#output');
-  balanceElement?.text = "Account Balance: RM${myEWallet.balance.toString()}"; //change to string
+  balanceElement?.text = "Account Balance: RM${myEWallet.balance.toString()}";
 }

@@ -29,7 +29,8 @@
     <h2>Top Up</h2>
     <label for="topUpAmount">Amount:</label>
     <input type="number" id="topUpAmount">
-    <button id="topUpButton">Top Up</button>
+    <button id="topUpButton">Top Up</button><br>
+    <label for="isCreditCard">Top-up using credit card? :<input type="checkbox" id="isCreditCard" name="isCreditCard" value="isCreditCard"></label>
   </div>
   
   <div id="Paris" class="tabcontent">
@@ -41,6 +42,10 @@
   
   <div id="Tokyo" class="tabcontent">
     <input id="viewTransactionButton" type=button onClick=""value='View Transaction'>
+    <br><br><br>
+    <!--append the table here  -->
+    <div id="Transaction-List">
+    </div>
   </div>
   
   <script>

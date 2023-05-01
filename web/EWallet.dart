@@ -6,55 +6,89 @@ class EWallet {
   double balance = 0.0;
 
   void topUp(double amount) {
-  if (amount < 0) {
-    querySelector("#result")?.text = "Invalid amount";
-    return;
-  }
-  if (amount == 0) {
-    querySelector("#result")?.text = "Invalid amount";
-    return;
-  }
-  balance += amount + 0.50;
+    var now = DateTime.now();
+    var temp = balance;
+    bool? isCreditCard = (querySelector('#isCreditCard') as CheckboxInputElement).checked;
+    if (amount <= 0) {
+      querySelector("#result")?.text = "Invalid amount";
+      window.alert("Invalid amount");
+      return;
+    }
+    balance += amount;
+    if (isCreditCard == true) {
+      balance += 0.50;
+      window.alert("Top-up using credit card successful. Current balance: ${balance}");
+    }
+    else{
+      window.alert("Top-up using cash successful. Current balance: ${balance}");
+    }
+
+    if(isCreditCard == true){
+      transactions.add(Transaction("Top-up (Credit Card)",temp, amount, now, balance));
+    }
+    else{
+      transactions.add(Transaction("Top-up (Cash)",temp, amount, now, balance));
+    }
   }
 
   void makePayment(double amount) {
     var now = DateTime.now();
     var peakHour = now.hour > 11 && now.hour < 14;
-    if (peakHour == true && amount < balance) {
-      print("Congrats! You got 10% off due to peak hour bonus!!");
-      window.alert("Congrats! You got 10% off due to peak hour bonus!!");
-      amount *= 0.9;
-    } else if (amount > balance) {
-      window.alert("Insufficient funds");
-      print("Insufficient funds");
-    } else {
-      var temp = balance;
-      balance -= amount;
-      transactions.add(Transaction(temp, amount, now, balance));
-      if (amount != 0) {
-        window.alert("Payment successful. Current balance: ${balance}");
-        // print("Payment successful. Current balance: $getBalance()");
+
+    if(amount > 0){
+        if (peakHour == true && amount < balance) {
+        print("Congrats! You got 10% off due to peak hour bonus!!");
+        window.alert("Congrats! You got 10% off due to peak hour bonus!!");
+        amount *= 0.9;
+      } else if (amount > balance) {
+        window.alert("Insufficient funds"); 
+      } else {
+        var temp = balance;
+        balance -= amount;
+        transactions.add(Transaction("Payment",temp, amount, now, balance));
+        if (amount != 0) {
+          window.alert("Payment successful. Current balance: ${balance}");
+        }
       }
     }
+    else{
+      window.alert("Invalid amount");
+    }
+  
   }
 
-  double getBalance(){
-    return balance;
-  }
-
-  void displayTransactions() {
+  void displayTransactions() {//this part is so hard to make
     var transactionList = querySelector('#viewTransaction');
     var table = TableElement();
+    table.id = 'transactions-table';
+    var existingTable = querySelector('#transactions-table');
 
+    if(existingTable != null){
+      existingTable.remove();
+    }
+    
     List <TableRowElement> tableRow = [];
+    List <TableCellElement> type = [];
     List <TableCellElement> balance = [];
     List <TableCellElement> payment = [];
     List <TableCellElement> date = [];
     List <TableCellElement> remainingAmount = [];
 
+    var headerRow = TableRowElement();
+    headerRow.addCell().text = 'Type';
+    headerRow.addCell().text = 'Balance';
+    headerRow.addCell().text = 'Amount';
+    headerRow.addCell().text = 'Date';
+    headerRow.addCell().text = 'Remaining Amount';
+    table.append(headerRow);
+
     int x = 0;
     for (var transaction in transactions) {
       tableRow.add(TableRowElement());
+
+      type.add(TableCellElement());
+      type[x] = tableRow[x].addCell();
+      type[x].text = transaction.type.toString();
 
       balance.add(TableCellElement());
       balance[x] = tableRow[x].addCell();
@@ -79,6 +113,6 @@ class EWallet {
     x++;
     }
     
-    document.body?.append(table);
+    document.querySelector('#Transaction-List')?.append(table);
   }
 }

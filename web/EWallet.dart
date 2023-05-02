@@ -8,19 +8,22 @@ class EWallet {
   void topUp(double amount) {
     var now = DateTime.now();
     var temp = balance;
-    bool? isCreditCard = (querySelector('#isCreditCard') as CheckboxInputElement).checked;
+    // bool? isCreditCard = (querySelector('#isCreditCard') as CheckboxInputElement).checked;
+    bool? isCreditCard = (querySelector('[name="paymentMethod"]:checked') as RadioButtonInputElement).value == "creditCard";
+    bool? isDebitCard = (querySelector('[name="paymentMethod"]:checked') as RadioButtonInputElement).value == "debitCard";
     if (amount <= 0) {
       querySelector("#result")?.text = "Invalid amount";
       window.alert("Invalid amount");
       return;
     }
     balance += amount;
+
     if (isCreditCard == true) {
       balance += 0.50;
       window.alert("Top-up using credit card successful. Current balance: ${balance}");
     }
     else{
-      window.alert("Top-up using cash successful. Current balance: ${balance}");
+      window.alert("Top-up using debit card successful. Current balance: ${balance}");
     }
 
     if(isCreditCard == true){
@@ -57,7 +60,7 @@ class EWallet {
   
   }
 
-  void displayTransactions() {//this part is so hard to make
+  void displayTransactions() {//this part is so hard to make  //ini pun susah nak buat macam haram jadah //susah gila nak buat ni
     var transactionList = querySelector('#viewTransaction');
     var table = TableElement();
     table.id = 'transactions-table';
@@ -75,7 +78,7 @@ class EWallet {
     List <TableCellElement> remainingAmount = [];
 
     var headerRow = TableRowElement();
-    headerRow.addCell().text = 'Type';
+    headerRow.addCell().text = 'Transaction type';
     headerRow.addCell().text = 'Balance';
     headerRow.addCell().text = 'Amount';
     headerRow.addCell().text = 'Date';

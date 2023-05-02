@@ -30,7 +30,17 @@
     <label for="topUpAmount">Amount:</label>
     <input type="number" id="topUpAmount">
     <button id="topUpButton">Top Up</button><br>
-    <label for="isCreditCard">Top-up using credit card? :<input type="checkbox" id="isCreditCard" name="isCreditCard" value="isCreditCard"></label>
+    <!-- <label for="isCreditCard">Top-up using credit card? :<input type="checkbox" id="isCreditCard" name="isCreditCard" value="isCreditCard"></label> -->
+    <label>Top-up using:</label>
+    <div class="wrapper">
+      <label for="creditCard" class="radioButton">Credit Card</label>
+      <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" checked>
+    </div>
+    <div class="wrapper">
+      <label for="debitCard" class="radioButton">Debit Card</label>
+      <input type="radio" id="debitCard" name="paymentMethod" value="debitCard">
+    </div>
+    
   </div>
   
   <div id="Paris" class="tabcontent">

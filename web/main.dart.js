@@ -4316,7 +4316,7 @@
       return receiver.length;
     }
   };
-  A.InputElement.prototype = {$isInputElement: 1, $isCheckboxInputElement: 1};
+  A.InputElement.prototype = {$isInputElement: 1, $isRadioButtonInputElement: 1};
   A.MouseEvent.prototype = {$isMouseEvent: 1};
   A.Node.prototype = {
     toString$0(receiver) {
@@ -4362,12 +4362,15 @@
   };
   A.EWallet.prototype = {
     topUp$1(amount) {
-      var t2, t3, _this = this,
+      var _this = this,
+        _s30_ = '[name="paymentMethod"]:checked',
         _s14_ = "Invalid amount",
         now = new A.DateTime(Date.now(), false),
         temp = _this.balance,
         t1 = document,
-        isCreditCard = type$.CheckboxInputElement._as(t1.querySelector("#isCreditCard")).checked;
+        t2 = type$.RadioButtonInputElement,
+        isCreditCard = t2._as(t1.querySelector(_s30_)).value === "creditCard";
+      t2._as(t1.querySelector(_s30_)).value;
       if (amount <= 0) {
         t1 = t1.querySelector("#result");
         if (t1 != null)
@@ -4376,19 +4379,18 @@
         return;
       }
       t1 = _this.balance += amount;
-      t2 = isCreditCard === true;
-      if (t2) {
+      if (isCreditCard) {
         t1 += 0.5;
         _this.balance = t1;
         B.Window_methods.alert$1(window, "Top-up using credit card successful. Current balance: " + A.S(t1));
       } else
-        B.Window_methods.alert$1(window, "Top-up using cash successful. Current balance: " + A.S(t1));
+        B.Window_methods.alert$1(window, "Top-up using debit card successful. Current balance: " + A.S(t1));
       t1 = _this.transactions;
-      t3 = _this.balance;
-      if (t2)
-        B.JSArray_methods.add$1(t1, new A.Transaction("Top-up (Credit Card)", temp, amount, now, t3));
+      t2 = _this.balance;
+      if (isCreditCard)
+        B.JSArray_methods.add$1(t1, new A.Transaction("Top-up (Credit Card)", temp, amount, now, t2));
       else
-        B.JSArray_methods.add$1(t1, new A.Transaction("Top-up (Cash)", temp, amount, now, t3));
+        B.JSArray_methods.add$1(t1, new A.Transaction("Top-up (Cash)", temp, amount, now, t2));
     },
     displayTransactions$0() {
       var table, existingTable, t2, tableRow, type, balance, payment, date, remainingAmount, headerRow, t3, t4, x, _i, transaction, t5, t6, t7, t8,
@@ -4411,7 +4413,7 @@
       remainingAmount = A._setArrayType([], t2);
       headerRow = t1.createElement("tr");
       t2 = type$.TableCellElement;
-      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Type");
+      B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Transaction type");
       B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Balance");
       B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Amount");
       B.TableCellElement_methods.set$text(t2._as(B.TableRowElement_methods._insertCell$1(headerRow, -1)), "Date");
@@ -4582,7 +4584,7 @@
     leafTags: null,
     arrayRti: Symbol("$ti")
   };
-  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","JavaScriptFunction":"LegacyJavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","HtmlDocument":"Node","Document":"Node","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","MathMLElement":"Element","JSBool":{"bool":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"AsyncError":{"Error":[]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"int":{"num":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"TypeError":[],"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MouseEvent":{"Event":[]},"TableCellElement":{"Element":[],"EventTarget":[]},"TableRowElement":{"Element":[],"EventTarget":[]},"HtmlElement":{"Element":[],"EventTarget":[]},"AnchorElement":{"Element":[],"EventTarget":[]},"AreaElement":{"Element":[],"EventTarget":[]},"CharacterData":{"EventTarget":[]},"Element":{"EventTarget":[]},"FormElement":{"Element":[],"EventTarget":[]},"InputElement":{"CheckboxInputElement":[],"Element":[],"EventTarget":[]},"Node":{"EventTarget":[]},"SelectElement":{"Element":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Window":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"SvgElement":{"Element":[],"EventTarget":[]}}'));
+  A._Universe_addRules(init.typeUniverse, JSON.parse('{"PlainJavaScriptObject":"LegacyJavaScriptObject","UnknownJavaScriptObject":"LegacyJavaScriptObject","JavaScriptFunction":"LegacyJavaScriptObject","AbortPaymentEvent":"Event","ExtendableEvent":"Event","AElement":"SvgElement","GraphicsElement":"SvgElement","AudioElement":"HtmlElement","MediaElement":"HtmlElement","HtmlDocument":"Node","Document":"Node","PointerEvent":"MouseEvent","CompositionEvent":"UIEvent","CDataSection":"CharacterData","Text":"CharacterData","MathMLElement":"Element","JSBool":{"bool":[]},"JSArray":{"List":["1"],"Iterable":["1"]},"JSUnmodifiableArray":{"JSArray":["1"],"List":["1"],"Iterable":["1"]},"JSNumber":{"double":[],"num":[]},"JSInt":{"double":[],"int":[],"num":[]},"JSNumNotInt":{"double":[],"num":[]},"JSString":{"String":[]},"LateError":{"Error":[]},"NullError":{"TypeError":[],"Error":[]},"JsNoSuchMethodError":{"Error":[]},"UnknownJsTypeError":{"Error":[]},"_StackTrace":{"StackTrace":[]},"Closure":{"Function":[]},"Closure0Args":{"Function":[]},"Closure2Args":{"Function":[]},"TearOffClosure":{"Function":[]},"StaticClosure":{"Function":[]},"BoundClosure":{"Function":[]},"RuntimeError":{"Error":[]},"_Error":{"Error":[]},"_TypeError":{"TypeError":[],"Error":[]},"_Future":{"Future":["1"]},"AsyncError":{"Error":[]},"_Zone":{"Zone":[]},"_RootZone":{"_Zone":[],"Zone":[]},"int":{"num":[]},"AssertionError":{"Error":[]},"TypeError":{"Error":[]},"NullThrownError":{"TypeError":[],"Error":[]},"ArgumentError":{"Error":[]},"RangeError":{"Error":[]},"IndexError":{"Error":[]},"UnsupportedError":{"Error":[]},"UnimplementedError":{"Error":[]},"ConcurrentModificationError":{"Error":[]},"StackOverflowError":{"Error":[]},"CyclicInitializationError":{"Error":[]},"_StringStackTrace":{"StackTrace":[]},"MouseEvent":{"Event":[]},"TableCellElement":{"Element":[],"EventTarget":[]},"TableRowElement":{"Element":[],"EventTarget":[]},"HtmlElement":{"Element":[],"EventTarget":[]},"AnchorElement":{"Element":[],"EventTarget":[]},"AreaElement":{"Element":[],"EventTarget":[]},"CharacterData":{"EventTarget":[]},"Element":{"EventTarget":[]},"FormElement":{"Element":[],"EventTarget":[]},"InputElement":{"RadioButtonInputElement":[],"Element":[],"EventTarget":[]},"Node":{"EventTarget":[]},"SelectElement":{"Element":[],"EventTarget":[]},"UIEvent":{"Event":[]},"Window":{"EventTarget":[]},"_EventStream":{"Stream":["1"]},"_ElementEventStreamImpl":{"_EventStream":["1"],"Stream":["1"]},"SvgElement":{"Element":[],"EventTarget":[]}}'));
   A._Universe_addErasedTypes(init.typeUniverse, JSON.parse('{"StreamSubscription":1}'));
   var string$ = {
     Congra: "Congrats! You got 10% off due to peak hour bonus!!",
@@ -4592,7 +4594,6 @@
     var findType = A.findType;
     return {
       AsyncError: findType("AsyncError"),
-      CheckboxInputElement: findType("CheckboxInputElement"),
       Error: findType("Error"),
       Event: findType("Event"),
       Function: findType("Function"),
@@ -4608,6 +4609,7 @@
       MouseEvent: findType("MouseEvent"),
       Null: findType("Null"),
       Object: findType("Object"),
+      RadioButtonInputElement: findType("RadioButtonInputElement"),
       Record: findType("Record"),
       StackTrace: findType("StackTrace"),
       String: findType("String"),

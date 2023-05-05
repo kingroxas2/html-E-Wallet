@@ -9,8 +9,14 @@ class EWallet {
     var now = DateTime.now();
     var temp = balance;
     // bool? isCreditCard = (querySelector('#isCreditCard') as CheckboxInputElement).checked;
-    bool? isCreditCard = (querySelector('[name="paymentMethod"]:checked') as RadioButtonInputElement).value == "creditCard";
-    bool? isDebitCard = (querySelector('[name="paymentMethod"]:checked') as RadioButtonInputElement).value == "debitCard";
+    bool? isCreditCard = (querySelector('[name="paymentMethod"]:checked')
+                as RadioButtonInputElement)
+            .value ==
+        "creditCard";
+    bool? isDebitCard = (querySelector('[name="paymentMethod"]:checked')
+                as RadioButtonInputElement)
+            .value ==
+        "debitCard";
     if (amount <= 0) {
       querySelector("#result")?.text = "Invalid amount";
       window.alert("Invalid amount");
@@ -20,17 +26,17 @@ class EWallet {
 
     if (isCreditCard == true) {
       balance += 0.50;
-      window.alert("Top-up using credit card successful. Current balance: ${balance}");
-    }
-    else{
-      window.alert("Top-up using debit card successful. Current balance: ${balance}");
+      window.alert("Top-up using credit card successful!!");
+    } else {
+      window.alert("Top-up using debit card successful!!");
     }
 
-    if(isCreditCard == true){
-      transactions.add(Transaction("Top-up (Credit Card)",temp, amount, now, balance));
-    }
-    else{
-      transactions.add(Transaction("Top-up (Cash)",temp, amount, now, balance));
+    if (isCreditCard == true) {
+      transactions
+          .add(Transaction("Top-up (Credit Card)", temp, amount, now, balance));
+    } else {
+      transactions
+          .add(Transaction("Top-up (Cash)", temp, amount, now, balance));
     }
   }
 
@@ -38,44 +44,43 @@ class EWallet {
     var now = DateTime.now();
     var peakHour = now.hour > 11 && now.hour < 14;
 
-    if(amount > 0){
-        if (peakHour == true && amount < balance) {
+    if (amount > 0) {
+      if (peakHour == true && amount < balance) {
         print("Congrats! You got 10% off due to peak hour bonus!!");
         window.alert("Congrats! You got 10% off due to peak hour bonus!!");
         amount *= 0.9;
       } else if (amount > balance) {
-        window.alert("Insufficient funds"); 
+        window.alert("Insufficient funds");
       } else {
         var temp = balance;
         balance -= amount;
-        transactions.add(Transaction("Payment",temp, amount, now, balance));
+        transactions.add(Transaction("Payment", temp, amount, now, balance));
         if (amount != 0) {
-          window.alert("Payment successful. Current balance: ${balance}");
+          window.alert("Payment successful!!");
         }
       }
-    }
-    else{
+    } else {
       window.alert("Invalid amount");
     }
-  
   }
 
-  void displayTransactions() {//this part is so hard to make  //ini pun susah nak buat macam haram jadah //susah gila nak buat ni
+  void displayTransactions() {
+    //this part is so hard to make  //ini pun susah nak buat macam haram jadah //susah gila nak buat ni
     var transactionList = querySelector('#viewTransaction');
     var table = TableElement();
     table.id = 'transactions-table';
     var existingTable = querySelector('#transactions-table');
 
-    if(existingTable != null){
+    if (existingTable != null) {
       existingTable.remove();
     }
-    
-    List <TableRowElement> tableRow = [];
-    List <TableCellElement> type = [];
-    List <TableCellElement> balance = [];
-    List <TableCellElement> payment = [];
-    List <TableCellElement> date = [];
-    List <TableCellElement> remainingAmount = [];
+
+    List<TableRowElement> tableRow = [];
+    List<TableCellElement> type = [];
+    List<TableCellElement> balance = [];
+    List<TableCellElement> payment = [];
+    List<TableCellElement> date = [];
+    List<TableCellElement> remainingAmount = [];
 
     var headerRow = TableRowElement();
     headerRow.addCell().text = 'Transaction type';
@@ -111,11 +116,12 @@ class EWallet {
 
       table.append(tableRow[x]);
 
-      print("Balance: ${transaction.balance}, Payment: ${transaction.payment}, Date: ${transaction.date}, Remaining Amount: ${transaction.remainingAmount}");
+      print(
+          "Balance: ${transaction.balance}, Payment: ${transaction.payment}, Date: ${transaction.date}, Remaining Amount: ${transaction.remainingAmount}");
       //transactionList?.text = "Balance: ${transaction.balance}, Payment: RM${transaction.payment}, Date: ${transaction.date}, Remaining Amount: ${transaction.remainingAmount}";
-    x++;
+      x++;
     }
-    
+
     document.querySelector('#Transaction-List')?.append(table);
   }
 }

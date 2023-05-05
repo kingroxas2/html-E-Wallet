@@ -4380,11 +4380,10 @@
       }
       t1 = _this.balance += amount;
       if (isCreditCard) {
-        t1 += 0.5;
-        _this.balance = t1;
-        B.Window_methods.alert$1(window, "Top-up using credit card successful. Current balance: " + A.S(t1));
+        _this.balance = t1 + 0.5;
+        B.Window_methods.alert$1(window, "Top-up using credit card successful!!");
       } else
-        B.Window_methods.alert$1(window, "Top-up using debit card successful. Current balance: " + A.S(t1));
+        B.Window_methods.alert$1(window, "Top-up using debit card successful!!");
       t1 = _this.transactions;
       t2 = _this.balance;
       if (isCreditCard)
@@ -4516,7 +4515,7 @@
             t1.balance = t3;
             B.JSArray_methods.add$1(t1.transactions, new A.Transaction("Payment", t2, amount, now, t3));
             if (amount !== 0)
-              B.Window_methods.alert$1(window, "Payment successful. Current balance: " + A.S(t1.balance));
+              B.Window_methods.alert$1(window, "Payment successful!!");
           }
         }
       else

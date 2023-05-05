@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="scaffolded-by" content="https://github.com/dart-lang/sdk">
-    <title>Banking Website</title>
+    <title>IIUM E-Wallet System</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="main.dart.js"></script>
 </head>
 <body>
   <div id="header">
-    <h1>IIUM Wallet</h1>
+    <h1>IIUM E-Wallet</h1>
     
     <!-- to display message if the user is eligible for 10% dicount -->
     <p id="notice"></p> 
@@ -27,12 +27,13 @@
   
   <div id="London" class="tabcontent">
     <h2>Top Up</h2>
-    <label for="topUpAmount">Amount:</label>
+    <label for="topUpAmount">Amount:</label><br>
     <input type="number" id="topUpAmount">
     <button id="topUpButton">Top Up</button><br>
     <!-- <label for="isCreditCard">Top-up using credit card? :<input type="checkbox" id="isCreditCard" name="isCreditCard" value="isCreditCard"></label> -->
-    <label>Top-up using:</label>
-    <div class="wrapper">
+    <div id="buttonContainer">
+      <label>Top-up using:</label>
+    <div class="wrapper"> 
       <label for="creditCard" class="radioButton">Credit Card</label>
       <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" checked>
     </div>
@@ -40,6 +41,7 @@
       <label for="debitCard" class="radioButton">Debit Card</label>
       <input type="radio" id="debitCard" name="paymentMethod" value="debitCard">
     </div>
+  </div>
     
   </div>
   

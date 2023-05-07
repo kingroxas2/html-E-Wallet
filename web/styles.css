@@ -62,13 +62,13 @@ text-align: center;
   cursor: pointer;
 }
 
-/* input[type="radio"] {
+input[type="radio"] {
   display: none;
   background-color: #00555a;
-} */
+}
 
 input[type="radio"]:checked + label {
-  background-color: red;
+  background-color: rgb(39, 201, 153);
   color: #fff;
 }
 /* Radio Button css */

@@ -11,7 +11,7 @@ background-color: #009688;
 color: #fff;
 }
 
-#output {
+#output, #buttonContainer {
   padding: 20px;
   margin: 20px auto;
   max-width: 600px;
@@ -22,7 +22,7 @@ color: #fff;
   font-size: 16px;
   line-height: 1.5;
   text-align: center;
-  color: #333;
+  color: #333;
 }
 
 .tab {
@@ -46,7 +46,6 @@ display: inline-block;
 }
 
 .wrapper {
-display: inline-flex; /* use flexbox */
 margin-right: 10px; /* add some spacing */
 text-align: center;
 
@@ -54,22 +53,33 @@ text-align: center;
 
 /* Radio Button css */
 .radioButton {
+  border: 1px solid #ccc;
   display: inline-block;
   padding: 5px 10px;
-  background-color: #009688;
-  color: #fff;
+  background-color: #ffffff;
+  color: #000000;
   border-radius: 4px;
   cursor: pointer;
+  width: 400px;
+  padding: 10px;
+  margin: 5px;
 }
 
 input[type="radio"] {
   display: none;
-  background-color: #00555a;
+  background-color: #fff;
+  color: #000;
+  width: 400px;
+  padding: 10px;
+  margin: 5px;
 }
 
 input[type="radio"]:checked + label {
-  background-color: rgb(39, 201, 153);
+  background-color: #00555a;
   color: #fff;
+  width: 400px;
+  padding: 10px;
+  margin: 5px;
 }
 /* Radio Button css */
 

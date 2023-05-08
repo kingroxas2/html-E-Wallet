@@ -36,7 +36,7 @@ class EWallet {
           .add(Transaction("Top-up (Credit Card)", temp, amount, now, balance));
     } else {
       transactions
-          .add(Transaction("Top-up (Cash)", temp, amount, now, balance));
+          .add(Transaction("Top-up (Debit Card)", temp, amount, now, balance));
     }
   }
 

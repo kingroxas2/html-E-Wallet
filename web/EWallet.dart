@@ -54,6 +54,13 @@ class EWallet {
         print("Congrats! You got 10% off due to peak hour bonus!!");
         window.alert("Congrats! You got 10% off due to peak hour bonus!!");
         amount *= 0.9;
+        var temp = balance;
+        balance -= amount;
+        transactions.add(Transaction("Payment", temp, amount, now, balance));
+        if (amount != 0) {
+          window.alert("Payment successful!!");
+        }
+        
       } else if (amount > balance) {
         window.alert("Insufficient funds");
       } else {

@@ -4490,8 +4490,9 @@
   };
   A.main_closure0.prototype = {
     call$1($event) {
-      var amountStr, amount, t1, now, t2, t3,
-        _s50_ = string$.Congra;
+      var amountStr, amount, t1, now, peakHour, temp, t2, t3,
+        _s50_ = string$.Congra,
+        _s20_ = "Payment successful!!";
       type$.MouseEvent._as($event);
       amountStr = this.makePaymentElement.value;
       if (amountStr == null)
@@ -4501,10 +4502,18 @@
         return;
       t1 = this.myEWallet;
       now = new A.DateTime(Date.now(), false);
+      peakHour = A.Primitives_getHours(now) >= 7 && A.Primitives_getHours(now) <= 14;
       if (amount > 0)
-        if (A.Primitives_getHours(now) > 11 && amount < t1.balance) {
+        if (peakHour && amount < t1.balance) {
           A.print(_s50_);
           B.Window_methods.alert$1(window, _s50_);
+          amount *= 0.9;
+          temp = t1.balance;
+          t2 = temp - amount;
+          t1.balance = t2;
+          B.JSArray_methods.add$1(t1.transactions, new A.Transaction("Payment", temp, amount, now, t2));
+          if (amount !== 0)
+            B.Window_methods.alert$1(window, _s20_);
         } else {
           t2 = t1.balance;
           if (amount > t2)
@@ -4514,7 +4523,7 @@
             t1.balance = t3;
             B.JSArray_methods.add$1(t1.transactions, new A.Transaction("Payment", t2, amount, now, t3));
             if (amount !== 0)
-              B.Window_methods.alert$1(window, "Payment successful!!");
+              B.Window_methods.alert$1(window, _s20_);
           }
         }
       else

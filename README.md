@@ -36,3 +36,9 @@ The Transaction class represents an individual transaction and stores relevant i
  The makePayment method checks if the given amount is less than or equal to the balance, applies a bonus if it is off-peak hours, subtracts the amount from the balance and adds a new Transaction object to the list of transactions with the updated balance, payment amount and date. 
  
  The displayTransactions method prints out the details of all the transactions in a list.
+
+
+Steps to run file:
+1. CD to the web folder
+2. Run "dart compile js main.dart -o main.dart.js"
+3. Open index.html file

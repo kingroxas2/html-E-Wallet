@@ -1,6 +1,6 @@
 <h1>INFO 4335 CASE STUDY</h1>
 
-<h2>No 4. e-Wallet Management System </h2>
+<h2>Group Wahida: No 4. e-Wallet Management System </h2>
 
 Team Member:
 1. MUHAMMAD FIRDAUS BIN SHAHRUM 2013803
@@ -10,8 +10,17 @@ Team Member:
 
 Contribution:
 1. Functions
-2. Methods
-3. Classes
-4. HTML and CSS
+- TopUp - Amir Hamzah
+- MakePayment - Faishal Aqil
+- displayTransaction - Firdaus shahrum
+
+2. Classes
+- Transactions - Iskandar
+- E-wallet - Firdaus, Faishal, Amir
+
+3. HTML and CSS
+- All Members
+
+Brief Description of the case study
 
 

@@ -1,4 +1,4 @@
-//MUHAMMAD ISKANDAR ZULQARNAIN BIN MOHD ABDULLAH 2029879
+//store transaction data
 class Transaction {
   String type;
   double balance;

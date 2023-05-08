@@ -5,7 +5,6 @@ class EWallet {
   List<Transaction> transactions = [];
   double balance = 0.0;
 
-  //Muhammad Amir Hamzah Bin Abd Aziz 2011685
   void topUp(double amount) {
     var now = DateTime.now();
     var temp = balance;
@@ -41,10 +40,10 @@ class EWallet {
     }
   }
 
-  //Faishal Aqil Bin Mohd Arief 2014883
   void makePayment(double amount) {
     var now = DateTime.now();
     var peakHour = now.hour >= 11 && now.hour <= 14;
+    print(peakHour);
 
     if (amount > 0) {
       if (peakHour == true && amount < balance) {
@@ -66,9 +65,8 @@ class EWallet {
     }
   }
 
-  //Muhammad Firdaus Bin Shahrum 2013803
   void displayTransactions() {
-    //this part is so hard to make
+    //this part is so hard to make  //ini pun susah nak buat macam haram jadah //susah gila nak buat ni
     var transactionList = querySelector('#viewTransaction');
     var table = TableElement();
     table.id = 'transactions-table';

@@ -2957,7 +2957,7 @@
       return new A.UnimplementedError(message);
     },
     print(object) {
-      A.printString(object);
+      A.printString(A.S(object));
     },
     DateTime: function DateTime(t0, t1) {
       this._value = t0;
@@ -4501,7 +4501,8 @@
         return;
       t1 = this.myEWallet;
       now = new A.DateTime(Date.now(), false);
-      peakHour = A.Primitives_getHours(now) > 11 && A.Primitives_getHours(now) < 14;
+      peakHour = A.Primitives_getHours(now) <= 23;
+      A.print(peakHour);
       if (amount > 0)
         if (peakHour && amount < t1.balance) {
           A.print(_s50_);

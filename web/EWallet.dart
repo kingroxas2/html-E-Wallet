@@ -45,9 +45,9 @@ class EWallet {
   }
 
   //Faishal Aqil Bin Mohd Arief 2014883
-  void makePayment(double amount) {
+  void makePayment(double amount) {    //provessing payment
     var now = DateTime.now();
-    var peakHour = now.hour >= 11 && now.hour <= 14;
+    var peakHour = now.hour >= 7 && now.hour <= 14;  
 
     if (amount > 0) {
       if (peakHour == true && amount < balance) {

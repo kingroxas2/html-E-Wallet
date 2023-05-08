@@ -4490,7 +4490,7 @@
   };
   A.main_closure0.prototype = {
     call$1($event) {
-      var amountStr, amount, t1, now, peakHour, t2, t3,
+      var amountStr, amount, t1, now, t2, t3,
         _s50_ = string$.Congra;
       type$.MouseEvent._as($event);
       amountStr = this.makePaymentElement.value;
@@ -4501,9 +4501,8 @@
         return;
       t1 = this.myEWallet;
       now = new A.DateTime(Date.now(), false);
-      peakHour = A.Primitives_getHours(now) > 11 && A.Primitives_getHours(now) < 14;
       if (amount > 0)
-        if (peakHour && amount < t1.balance) {
+        if (A.Primitives_getHours(now) > 11 && amount < t1.balance) {
           A.print(_s50_);
           B.Window_methods.alert$1(window, _s50_);
         } else {

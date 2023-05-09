@@ -24,6 +24,7 @@ Contribution:
 Brief Description of the case study
 
 Our case study is an e-wallet system developed by using dart and html with a few functions such as: 
+
 -Top up the wallet balance
 -Make a payment from the wallet balance, with a bonus of 10% off during off-peak hours
 -Display a list of all the transactions made

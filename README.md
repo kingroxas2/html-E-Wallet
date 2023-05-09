@@ -21,7 +21,7 @@ Contribution:
 3. HTML and CSS
 - All Members
 
-Brief Description of the case study
+<strong>Brief Description of the case study</strong>
 
 Our case study is an e-wallet system developed by using dart and html with a few functions such as: 
 
